@@ -80,13 +80,12 @@ def test_post_create_courses(client):
 def test_post_update_courses(client, course_factory):
     courses = course_factory(_quantity=10)
     course_id = courses[2].id
-    url = f'/api/v1/courses/'
-    update_response = client.post(url, data={'id': course_id, 'name': 'Обновление'})
-    assert update_response.status_code == 201
-    url_course = f'/api/v1/courses/{course_id}/'
-    response = client.get(url_course)
+    url = f'/api/v1/courses/{course_id}/'
+    update_response = client.patch(url, data={'name': 'Обновление'})
+    assert update_response.status_code == 200
+    response = client.get(url)
     data = response.json()
-    assert data[0]['name'] == 'Обновление'
+    assert data['name'] == 'Обновление'
 
 
 @pytest.mark.django_db
